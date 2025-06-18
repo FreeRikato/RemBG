@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from "typeorm";
+import { Image } from "./Images";
 
 /*
  * Crucial Step: Modify tsconfig.json to support TypeORM's decorators and property
@@ -10,9 +17,18 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     id: number;
 
+    @Column({ unique: true })
+    email: string;
+
     @Column()
-    name: string;
+    password: string;
+
+    @OneToMany(() => Image, (image) => image.user)
+    images: Image[];
+
+    @CreateDateColumn()
+    createdAt: Date;
 }
