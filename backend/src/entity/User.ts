@@ -6,6 +6,7 @@ import {
     PrimaryGeneratedColumn,
 } from "typeorm";
 import { Image } from "./Images";
+import { Exclude } from "class-transformer";
 
 /*
  * Crucial Step: Modify tsconfig.json to support TypeORM's decorators and property
@@ -24,6 +25,7 @@ export class User {
     email: string;
 
     @Column()
+    @Exclude() // Excluding password when transformed
     password: string;
 
     @OneToMany(() => Image, (image) => image.user)
