@@ -30,7 +30,7 @@ const registerUser = async ({
 
     const user = await createAndSaveUser({ email, hashedPassword });
 
-    const token = generateToken({ id: user.id, email });
+    const token = generateToken({ id: user.id });
 
     return { user: instanceToPlain(user), token };
 };
@@ -56,7 +56,7 @@ const loginUser = async ({
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch)
         throw new HttpError("Invalid credentials", HttpStatusCode.UNAUTHORIZED);
-    const token = generateToken({ id: user.id, email });
+    const token = generateToken({ id: user.id });
     return { user: instanceToPlain(user), token };
 };
 

@@ -1,6 +1,7 @@
 import express from "express";
 import { AppDataSource } from "./data-source";
 import authRoutes from "./controllers/auth.controller";
+import userRoutes from "./controllers/user.controller";
 import { PORT } from "./config";
 import { errorHandler } from "./middlewares/error.middleware";
 
@@ -8,6 +9,7 @@ const app = express();
 
 app.use(express.json());
 app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
 app.use(errorHandler);
 
 app.get("/", (_, res) => {

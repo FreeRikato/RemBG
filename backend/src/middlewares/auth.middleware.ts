@@ -12,7 +12,6 @@ const authenticate = (req: userRequest, res: Response, next: NextFunction) => {
             HttpStatusCode.CONFLICT,
         );
     const token = bearerToken.split(" ")[1];
-    console.log(token);
     if (!token)
         throw new HttpError(
             "Token is missing or undefined in bearer token",
