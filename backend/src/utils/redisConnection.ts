@@ -7,5 +7,7 @@ const redisOptions: RedisOptions = {
     maxRetriesPerRequest: null,
 };
 
+console.log("Redis connected");
+
 const redisConnection = new IORedis(redisOptions);
 export default redisConnection;

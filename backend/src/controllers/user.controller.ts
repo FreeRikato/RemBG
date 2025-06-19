@@ -7,18 +7,19 @@ import { userIdSchema } from "../types/userId.type";
 import { userRequest } from "../types/userRequest.interface";
 import retrieveUserById from "../repositories/retrieveUserById";
 import { userSchema } from "../types/user.type";
-
 import {
     deleteUserDetails,
     updateUserDetails,
 } from "../services/user.services";
 import { instanceToPlain } from "class-transformer";
+import { cache } from "../middlewares/cache.middleware";
 
 const router = Router();
 
 router.get(
     "/",
     authenticate,
+    cache(600),
     asyncHandler(async (req, res) => {
         const users = await retrieveUsers();
         res.json({
@@ -31,6 +32,8 @@ router.get(
 router.get(
     "/:id",
     authenticate,
+    ReqValidate.params(userIdSchema),
+    cache(600),
     ReqValidate.params(userIdSchema),
     asyncHandler(async (req: userRequest, res) => {
         const user = await retrieveUserById(req.params.id);
@@ -68,7 +71,7 @@ router.delete(
     authenticate,
     ReqValidate.params(userIdSchema),
     asyncHandler(async (req: userRequest, res) => {
-        const user = deleteUserDetails({
+        const user = await deleteUserDetails({
             jwt_ID: String(req.id),
             params_ID: req.params.id,
         });

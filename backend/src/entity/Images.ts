@@ -10,7 +10,7 @@ import { User } from "./User";
 @Entity()
 export class Image {
     @PrimaryGeneratedColumn("uuid")
-    id: number;
+    id: string;
 
     @Column({ nullable: true })
     original_url: string;

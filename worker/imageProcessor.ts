@@ -3,7 +3,6 @@ import * as fs from "fs/promises";
 import path from "path";
 import { uploadImage } from "../backend/src/services/png.services";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 import os from "os";
 
 export const processImageJob = async ({

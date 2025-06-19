@@ -6,8 +6,6 @@ import authenticate from "../middlewares/auth.middleware";
 import { HttpStatusCode } from "../types/HTTPStatusCode.enum";
 import { processedImage, uploadImage } from "../services/png.services";
 import { userRequest } from "../types/userRequest.interface";
-import ReqValidate from "../middlewares/validation.middleware";
-import { userIdSchema } from "../types/userId.type";
 
 const router = Router();
 // Sets up multer to temporarily store uploaded files in memory (RAM) instead of on disk

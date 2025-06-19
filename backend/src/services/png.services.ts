@@ -9,7 +9,6 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { HttpError } from "../middlewares/error.middleware";
 import { HttpStatusCode } from "../types/HTTPStatusCode.enum";
 import { Queue } from "bullmq";
-import { v4 as uuidv4 } from "uuid";
 import redisConnection from "../utils/redisConnection";
 
 /*

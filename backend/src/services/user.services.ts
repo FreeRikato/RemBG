@@ -6,6 +6,7 @@ import { HttpStatusCode } from "../types/HTTPStatusCode.enum";
 import * as bcrypt from "bcrypt";
 import deleteUser from "../repositories/deleteUser";
 import updateUser from "../repositories/updateUser";
+import redisClient from "../utils/redisConnection";
 
 const updateUserDetails = async ({
     jwt_ID,
@@ -36,6 +37,12 @@ const updateUserDetails = async ({
 
     const updatedUser = await updateUser({ params_ID, email, hashedPassword });
 
+    if (redisClient.status === "ready") {
+        console.log(`[CACHE] Invalidating for user: ${params_ID}`);
+        await redisClient.del(`/user/${params_ID}`);
+        await redisClient.del(`/user`);
+    }
+
     return { user: instanceToPlain(updatedUser) };
 };
 
@@ -62,6 +69,11 @@ const deleteUserDetails = async ({
 
     const user = await deleteUser(params_ID);
 
+    if (redisClient.status === "ready") {
+        console.log(`[CACHE] Invalidating for user: ${params_ID}`);
+        await redisClient.del(`/user/${params_ID}`);
+        await redisClient.del(`/user`);
+    }
     return { user: instanceToPlain(user) };
 };
 
