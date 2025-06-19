@@ -1,7 +1,10 @@
 import * as dotenv from "dotenv";
 import { S3Client } from "@aws-sdk/client-s3";
+import * as path from "path";
 
-dotenv.config();
+const envPath = path.resolve(__dirname, "../../.env");
+
+dotenv.config({ path: envPath });
 
 const getEnv = (name: string): string => {
     const value = process.env[name];
@@ -27,3 +30,5 @@ export const s3Client = new S3Client({
         secretAccessKey,
     },
 });
+
+export const queueName = getEnv("QUEUE_NAME");
