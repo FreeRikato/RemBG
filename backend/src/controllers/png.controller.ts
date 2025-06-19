@@ -4,8 +4,10 @@ import multer from "multer";
 import { asyncHandler, HttpError } from "../middlewares/error.middleware";
 import authenticate from "../middlewares/auth.middleware";
 import { HttpStatusCode } from "../types/HTTPStatusCode.enum";
-import { uploadImage } from "../services/png.services";
+import { processedImage, uploadImage } from "../services/png.services";
 import { userRequest } from "../types/userRequest.interface";
+import ReqValidate from "../middlewares/validation.middleware";
+import { userIdSchema } from "../types/userId.type";
 
 const router = Router();
 // Sets up multer to temporarily store uploaded files in memory (RAM) instead of on disk
@@ -44,8 +46,20 @@ router.post(
         return res.status(200).json({
             message: "Image uploaded successfully",
             url,
-            ...job,
+            job,
         });
+    }),
+);
+
+router.get(
+    "/:jobID",
+    authenticate,
+    asyncHandler(async (req, res) => {
+        const jobID = req.params.jobID;
+        const { status, result } = await processedImage(jobID);
+
+        if (status === "completed") res.json({ result });
+        else res.json({ status });
     }),
 );
 

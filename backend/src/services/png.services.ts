@@ -92,3 +92,15 @@ export const uploadImage = async (
         );
     }
 };
+
+export const processedImage = async (jobID: string) => {
+    const job = await messageQueue.getJob(jobID);
+    if (!job) throw new HttpError("Job not found", HttpStatusCode.CONFLICT);
+    const state = await job.getState();
+
+    if (state === "completed") {
+        const result = await job.returnvalue;
+        return { status: "completed", result };
+    }
+    return { status: state };
+};
